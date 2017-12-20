@@ -137,6 +137,30 @@ public final class NodeUtil {
             return result;
         }
 
+        private boolean recParse(SyntaxTree mainTree, Set<Children.Rule> rules) throws Exception {
+            for (Children.Rule rule : rules) {
+                SyntaxTree tmp_tree2 = new SyntaxTree(rule);
+//                        System.out.println("----rec>>>>  " + recursion);
+                boolean result_rec = parseSub(rule, node, tmp_tree2);
+
+                if(result_rec) {
+
+                    mainTree.add(tmp_tree2);
+                    recParse(mainTree, rules);
+
+                    this.tree = mainTree;
+                    // TODO: 2017/12/15 delete
+//                            System.out.print("rec!! node parse: " + this.node.getClass() + " @@@ ");
+//                            System.out.println(deque_rec);
+                    return true;
+                } else {
+//                            System.out.println("false... rec " + tmp_tree2);
+                    tmp_tree2.unget(node.env);
+                }
+            }
+            return false;
+        }
+
         @Override
         public boolean parse() throws Exception{
             Define define = node.getClass().getAnnotation(Define.class);
@@ -151,23 +175,8 @@ public final class NodeUtil {
 
                 if(result) {
                     // recursions parse
-                    for (Children.Rule recursion : children.recursions) {
-                        SyntaxTree tmp_tree2 = new SyntaxTree(recursion);
-//                        System.out.println("----rec>>>>  " + recursion);
-                        boolean result_rec = parseSub(recursion, node, tmp_tree2);
-
-                        if(result_rec) {
-
-                            tmp_tree1.add(tmp_tree2);
-                            this.tree = tmp_tree1;
-                            // TODO: 2017/12/15 delete
-//                            System.out.print("rec!! node parse: " + this.node.getClass() + " @@@ ");
-//                            System.out.println(deque_rec);
-                            return true;
-                        } else {
-//                            System.out.println("false... rec " + tmp_tree2);
-                            tmp_tree2.unget(node.env);
-                        }
+                    if(recParse(tmp_tree1, children.recursions)) {
+                        return true;
                     }
 
                     // TODO: 2017/12/15 delete
@@ -359,7 +368,7 @@ public final class NodeUtil {
                     recursions.stream().map(Object::toString).collect(Collectors.joining("\n")) +
                     "\n" +
                     "=== not recursions ===\n" +
-                    not_recursions.stream().map(Object::toString).collect(Collectors.joining()) +
+                    not_recursions.stream().map(Object::toString).collect(Collectors.joining("\n")) +
                     "\n";
         }
     }

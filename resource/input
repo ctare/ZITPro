@@ -1,5 +1,6 @@
 a = 10
-DO WHILE
+DO UNTIL 1 < 20
     PRINT ("Hello")
+    a = 1
 LOOP
-
+END
