@@ -29,12 +29,6 @@ public class Program extends Node {
             System.out.println(((NodeUtil.HasSyntaxTree) stmtList).getSyntaxTree());
         }
         return result;
-
-//        if(lexicalUnit.getType() == LexicalType.END) {
-//            super.type = NodeType.END;
-//            return true;
-//        }
-//        return false;
     }
 
     private Environment getEnv() throws NoSuchFieldException, IllegalAccessException {
