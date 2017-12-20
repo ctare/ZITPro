@@ -1,18 +1,12 @@
-package newlang4;
-
+import newlang4.*;
 import newlangdef.Program;
 
-import java.io.FileInputStream;
-
-public class Main {
-
-	/**
-	 * @param args
-	 */
+public class TreeMain {
+    // 構文木確認用
 	public static void main(String[] args) throws Exception {
 		LexicalAnalyzer lex;
-		Environment		env;
-		Node			program;
+		Environment env;
+		Node program;
 
 		System.out.println("basic parser");
 		lex = new LexicalAnalyzerImpl("resource/input");

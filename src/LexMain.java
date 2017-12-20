@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 /**
  * Created by ctare on 2017/09/26.
  */
-public class Main {
+public class LexMain {
+    // 字句解析確認用
     public static void main(String[] args) throws FileNotFoundException {
         String fileName = "resource/input";
         LexicalAnalyzerImpl lexicalAnalyzer = new LexicalAnalyzerImpl(fileName);
