@@ -77,7 +77,6 @@ public final class NodeUtil {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface SimpleParse {
-        boolean value() default true;
     }
 
     public interface HasSyntaxTree {
@@ -144,11 +143,13 @@ public final class NodeUtil {
                 boolean result_rec = parseSub(rule, node, tmp_tree2);
 
                 if(result_rec) {
+                    SyntaxTree tmp = new SyntaxTree(mainTree.rule);
+                    tmp.add(mainTree);
+                    tmp.addAll(tmp_tree2);
 
-                    mainTree.add(tmp_tree2);
-                    recParse(mainTree, rules);
+                    recParse(tmp, rules);
 
-                    this.tree = mainTree;
+                    this.tree = tmp;
                     // TODO: 2017/12/15 delete
 //                            System.out.print("rec!! node parse: " + this.node.getClass() + " @@@ ");
 //                            System.out.println(deque_rec);
@@ -218,6 +219,10 @@ public final class NodeUtil {
                 }
             }
         }
+
+//        public Value getValue() {
+//            return rule.getValue();
+//        }
     }
 
     public static class TerminalSymbol extends SyntaxTree {

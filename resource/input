@@ -1,6 +1,2 @@
-a = 10
-DO UNTIL 1 < 20
-    PRINT ("Hello")
-    a = 1
-LOOP
-END
+ok = a + (1 + 3) * c - 10
+
