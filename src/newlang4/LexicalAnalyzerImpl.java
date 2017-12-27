@@ -61,7 +61,6 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer {
     @Override
     public LexicalUnit get() throws Exception{
         if(!back.isEmpty()) {
-//            System.out.println("get:: " + back);
             return back.pop();
         }
         while(true) {
