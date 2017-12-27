@@ -1,7 +1,6 @@
-a = 10 + (5 + 2) + 3
-DO UNTIL 1 < 20
+a = 5
+DO UNTIL a < 1
     PRINT ("Hello")
-    a = 1 + (5 + 6) * 10 - -5
+    a = a - 1
 LOOP
-b = 10
 END
