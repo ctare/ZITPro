@@ -24,3 +24,4 @@ public class Expr extends Node {
             .or(LexicalType.SUB, Expr.class)
             .or(LexicalType.LP, Expr.class, LexicalType.RP);
 }
+

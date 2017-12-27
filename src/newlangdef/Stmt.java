@@ -12,7 +12,7 @@ import newlang4.NodeUtil;
 @NodeUtil.SimpleParse
 @NodeUtil.Define(type = NodeType.STMT)
 public class Stmt extends Node {
-    public static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(CallFunc.firstSet).merge(Subst.firstSet);
+    public static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(LexicalType.END).merge(CallFunc.firstSet).merge(Subst.firstSet);
 
     public static NodeUtil.Children children = new NodeUtil.Children<Stmt>()
             .or(Subst.class)

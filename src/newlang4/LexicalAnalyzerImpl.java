@@ -83,7 +83,7 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer {
             }
             if(break_flg) break;
         }
-        return new LexicalUnit(LexicalType.END);
+        return new LexicalUnit(LexicalType.EOF);
     }
 
     @Override
