@@ -24,11 +24,12 @@ public class Expr extends Node {
             .or(Expr.class, LexicalType.SUB, Expr.class)
             .or(Expr.class, LexicalType.MUL, Expr.class)
             .or(Expr.class, LexicalType.DIV, Expr.class)
+            .or(LexicalType.SUB, Expr.class)
+            .or(LexicalType.LP, Expr.class, LexicalType.RP)
             .or(LexicalType.NAME)
             .or(LexicalType.INTVAL)
             .or(LexicalType.DOUBLEVAL)
             .or(LexicalType.LITERAL)
-            .or(LexicalType.SUB, Expr.class)
             .or(CallFunc.class);
 }
 
