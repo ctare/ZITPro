@@ -29,6 +29,6 @@ public class Expr extends Node {
             .or(LexicalType.DOUBLEVAL)
             .or(LexicalType.LITERAL)
             .or(LexicalType.SUB, Expr.class)
-            .or(LexicalType.LP, Expr.class, LexicalType.RP);
+            .or(CallFunc.class);
 }
 
