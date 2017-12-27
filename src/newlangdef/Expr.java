@@ -11,7 +11,14 @@ import newlang4.NodeUtil;
 @NodeUtil.SimpleParse
 @NodeUtil.Define(type = NodeType.EXPR)
 public class Expr extends Node {
-    public final static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(LexicalType.SUB, LexicalType.LP, LexicalType.NAME, LexicalType.INTVAL, LexicalType.DOUBLEVAL, LexicalType.LITERAL /* call func */);
+    public final static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(
+            LexicalType.SUB,
+            LexicalType.LP,
+            LexicalType.NAME,
+            LexicalType.INTVAL,
+            LexicalType.DOUBLEVAL,
+            LexicalType.LITERAL)
+            .merge(CallFunc.firstSet);
     public final static NodeUtil.Children children = new NodeUtil.Children<Expr>()
             .or(Expr.class, LexicalType.ADD, Expr.class)
             .or(Expr.class, LexicalType.SUB, Expr.class)
