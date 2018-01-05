@@ -125,11 +125,11 @@ public final class NodeUtil {
 
         private boolean recParse(SyntaxTree mainTree, Set<Children.Rule> rules) throws Exception {
             for (Children.Rule rule : rules) {
-                SyntaxTree tmp_tree2 = new SyntaxTree(rule);
+                SyntaxTree tmp_tree2 = new SyntaxTree(mainTree.rule);
                 boolean result_rec = parseSub(rule, node, tmp_tree2);
 
                 if(result_rec) {
-                    SyntaxTree tmp = new SyntaxTree(mainTree.rule);
+                    SyntaxTree tmp = new SyntaxTree(rule);
                     tmp.add(mainTree);
                     tmp.addAll(tmp_tree2);
 
@@ -197,9 +197,9 @@ public final class NodeUtil {
             }
         }
 
-//        public Value getValue() {
-//            return rule.getValue();
-//        }
+        public Value getValue() {
+            return rule.getValue(this);
+        }
     }
 
     public static class TerminalSymbol extends SyntaxTree {
@@ -226,6 +226,10 @@ public final class NodeUtil {
         @Override
         public String toString() {
             return terminal.toString();
+        }
+
+        public Value getValue() {
+            return terminal.getValue();
         }
     }
 
@@ -259,6 +263,7 @@ public final class NodeUtil {
         private final Set<NotRecursiveRule> not_recursions = new TreeSet<>((o1, o2) -> o1.length() < o2.length() ? 1 : -1);
         private final Set<Rule> recursions = new TreeSet<>((o1, o2) -> o1.length() < o2.length() ? 1: -1);
         private final Class<? extends Node> parent;
+        private Rule now;
 
         @SuppressWarnings("unchecked")
         public Children(T... dummy) {
@@ -267,15 +272,24 @@ public final class NodeUtil {
 
         public final Children<T> or(Child... children) {
             if(children[0].match(parent)) {
-                recursions.add(new Rule(children));
+                Rule rule = new Rule(children);
+                recursions.add(rule);
+                now = rule;
             } else {
-                not_recursions.add(new NotRecursiveRule(children));
+                NotRecursiveRule rule = new NotRecursiveRule(children);
+                not_recursions.add(rule);
+                now = rule;
             }
             return this;
         }
 
         public final Children<T> or(Object... childrenWithConvert) {
             return or(convert(childrenWithConvert));
+        }
+
+        public final Children<T> f(GetValueFunction getValueFunction) {
+            now.getValueFunction = getValueFunction;
+            return this;
         }
 
         @SuppressWarnings("unchecked")
@@ -294,9 +308,14 @@ public final class NodeUtil {
             return c.toArray(result);
         }
 
+        public interface GetValueFunction {
+            Value getValue(SyntaxTree tree);
+        }
+
         private static class Rule implements Iterator<Child>, Iterable<Child>{
             List<Child> children = new ArrayList<>();
             Iterator<Child> iterator;
+            GetValueFunction getValueFunction = e -> null;
 
             private Rule(Child... children) {
                 Collections.addAll(this.children, children);
@@ -328,6 +347,10 @@ public final class NodeUtil {
             @Override
             public String toString() {
                 return children.toString();
+            }
+
+            public Value getValue(SyntaxTree tree) {
+                return getValueFunction.getValue(tree);
             }
         }
 

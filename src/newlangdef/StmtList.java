@@ -13,9 +13,12 @@ import newlang4.NodeUtil;
 public class StmtList extends Node {
     public final static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(Stmt.firstSet).merge(Block.firstSet);
     public final static NodeUtil.Children children = new NodeUtil.Children<StmtList>()
-            .or(Stmt.class)
-            .or(StmtList.class, LexicalType.NL, Stmt.class)
-            .or(StmtList.class, LexicalType.NL)
-            .or(Block.class)
-            .or(Block.class, LexicalType.NL);
+            .or(Stmt.class).f(tree -> tree.get(0).getValue())
+            .or(StmtList.class, LexicalType.NL, Stmt.class).f(tree -> {
+                tree.get(0).getValue();
+                return tree.get(2).getValue();
+            })
+            .or(StmtList.class, LexicalType.NL).f(tree -> tree.get(0).getValue())
+            .or(Block.class).f(tree -> tree.get(0).getValue())
+            .or(Block.class, LexicalType.NL).f(tree -> tree.get(0).getValue());
 }

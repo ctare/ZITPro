@@ -26,7 +26,9 @@ public class Program extends Node {
         Node stmtList = NodeUtil.isMatch(StmtList.class, env, lexicalUnit);
         boolean result = stmtList != null && stmtList.parse();
         if(stmtList instanceof NodeUtil.HasSyntaxTree) {
-            System.out.println(((NodeUtil.HasSyntaxTree) stmtList).getSyntaxTree());
+            NodeUtil.SyntaxTree tree = ((NodeUtil.HasSyntaxTree) stmtList).getSyntaxTree();
+            System.out.println(tree);
+            System.out.println(tree.getValue());
         }
         return result;
     }

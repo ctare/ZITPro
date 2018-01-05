@@ -15,7 +15,7 @@ public class Stmt extends Node {
     public static NodeUtil.FirstSet firstSet = new NodeUtil.FirstSet(LexicalType.END).merge(CallFunc.firstSet).merge(Subst.firstSet);
 
     public static NodeUtil.Children children = new NodeUtil.Children<Stmt>()
-            .or(Subst.class)
+            .or(Subst.class).f(tree -> tree.get(0).getValue())
             .or(LexicalType.END)
-            .or(CallFunc.class);
+            .or(CallFunc.class).f(tree -> tree.get(0).getValue());
 }
