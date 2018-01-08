@@ -26,7 +26,8 @@ public class Expr extends Node {
                 System.out.println(tree.get(0).getValue().getType());
                 System.out.println(tree.get(0).getValue().getIValue());
                 System.out.println(tree.get(2).getValue().getType());
-                return null;
+                // TODO: 2018/01/08 数値 - 数値で仮対応
+                return new ValueImpl(tree.get(0).getValue().getIValue() - tree.get(2).getValue().getIValue(), ValueType.INTEGER);
             })
             .or(Expr.class, LexicalType.MUL, Expr.class)
             .or(Expr.class, LexicalType.DIV, Expr.class)
